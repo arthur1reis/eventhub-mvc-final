@@ -1,0 +1,59 @@
+<%- include('../partials/header', { titulo: 'Minhas inscrições' }) %>
+
+<main class="container">
+  <div class="page-header">
+    <div>
+      <h1>Minhas inscrições</h1>
+      <p>Acompanhe os eventos em que você está inscrito ou já se inscreveu.</p>
+    </div>
+    <a href="/eventos" class="botao botao--primario">Explorar eventos</a>
+  </div>
+
+  <%- include('../partials/mensagens') %>
+
+  <% if (inscricoes.length === 0) { %>
+    <div class="estado-vazio painel">
+      <p>Você ainda não se inscreveu em nenhum evento.</p>
+      <a href="/eventos" class="botao botao--primario">Ver eventos disponíveis</a>
+    </div>
+  <% } else { %>
+    <table class="tabela-inscricoes">
+      <thead>
+        <tr>
+          <th>Evento</th>
+          <th>Data</th>
+          <th>Local</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% inscricoes.forEach(function(inscricao) { %>
+          <tr>
+            <td>
+              <% if (inscricao.evento_id) { %>
+                <a href="/eventos/<%= inscricao.evento_id._id %>"><%= inscricao.evento_id.titulo %></a>
+              <% } else { %>
+                <span class="campo-ajuda">Evento removido</span>
+              <% } %>
+            </td>
+            <td><%= inscricao.evento_id ? new Date(inscricao.evento_id.data_evento).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : '—' %></td>
+            <td><%= inscricao.evento_id ? inscricao.evento_id.local : '—' %></td>
+            <td>
+              <span class="status-tag status-tag--<%= inscricao.status %>"><%= inscricao.status %></span>
+            </td>
+            <td>
+              <% if (inscricao.status === 'confirmada') { %>
+                <form class="form-acao-linha" action="/inscricoes/<%= inscricao._id %>/cancelar" method="POST">
+                  <button type="submit" class="botao botao--perigo botao--pequeno">Cancelar</button>
+                </form>
+              <% } %>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

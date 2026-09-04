@@ -1,0 +1,27 @@
+<nav class="navbar">
+  <a class="navbar__marca" href="<%= usuarioLogado ? '/eventos' : '/login' %>">📅 EventHub</a>
+
+  <div class="navbar__links">
+    <% if (usuarioLogado) { %>
+      <a href="/eventos">Eventos</a>
+      <% if (usuarioLogado.tipo === 'organizador') { %>
+        <a href="/eventos/novo">Criar evento</a>
+      <% } else { %>
+        <a href="/inscricoes/minhas">Minhas inscrições</a>
+      <% } %>
+    <% } %>
+  </div>
+
+  <div class="navbar__usuario">
+    <% if (usuarioLogado) { %>
+      <span class="navbar__nome"><%= usuarioLogado.nome %></span>
+      <span class="badge-tipo badge-tipo--<%= usuarioLogado.tipo %>"><%= usuarioLogado.tipo %></span>
+      <form class="form-acao-linha" action="/auth/logout" method="POST">
+        <button type="submit" class="botao botao--secundario botao--pequeno">Sair</button>
+      </form>
+    <% } else { %>
+      <a href="/login">Entrar</a>
+      <a href="/registro" class="botao botao--primario botao--pequeno">Criar conta</a>
+    <% } %>
+  </div>
+</nav>

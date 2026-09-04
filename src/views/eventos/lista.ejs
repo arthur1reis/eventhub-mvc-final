@@ -1,0 +1,58 @@
+<%- include('../partials/header', { titulo: 'Eventos' }) %>
+
+<main class="container">
+  <div class="page-header">
+    <div>
+      <h1>Eventos</h1>
+      <p>
+        <% if (usuarioLogado.tipo === 'organizador') { %>
+          Gerencie seus eventos ou veja os de outros organizadores.
+        <% } else { %>
+          Explore os eventos disponíveis e faça sua inscrição.
+        <% } %>
+      </p>
+    </div>
+    <% if (usuarioLogado.tipo === 'organizador') { %>
+      <a href="/eventos/novo" class="botao botao--primario">+ Novo evento</a>
+    <% } %>
+  </div>
+
+  <%- include('../partials/mensagens') %>
+
+  <% if (eventos.length === 0) { %>
+    <div class="estado-vazio painel">
+      <p>Nenhum evento cadastrado ainda.</p>
+      <% if (usuarioLogado.tipo === 'organizador') { %>
+        <a href="/eventos/novo" class="botao botao--primario">Criar o primeiro evento</a>
+      <% } %>
+    </div>
+  <% } else { %>
+    <div class="grade-eventos">
+      <% eventos.forEach(function(evento) { %>
+        <% const vagasRestantes = evento.capacidade_maxima - (evento.totalConfirmadas || 0); %>
+        <div class="card-evento">
+          <h2 class="card-evento__titulo"><%= evento.titulo %></h2>
+          <div class="card-evento__meta">
+            <span>📅 <%= new Date(evento.data_evento).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) %></span>
+            <span>📍 <%= evento.local %></span>
+            <span>👤 <%= evento.organizador_id && evento.organizador_id.nome ? evento.organizador_id.nome : 'Organizador' %></span>
+          </div>
+          <p class="card-evento__descricao"><%= evento.descricao.length > 110 ? evento.descricao.slice(0, 110) + '…' : evento.descricao %></p>
+          <div class="card-evento__rodape">
+            <% if (vagasRestantes <= 0) { %>
+              <span class="selo selo--lotado">Lotado</span>
+            <% } else { %>
+              <span class="selo selo--vagas"><%= vagasRestantes %> vaga(s)</span>
+            <% } %>
+            <% if (evento.inscricaoConfirmada) { %>
+              <span class="selo selo--inscrito">Inscrito</span>
+            <% } %>
+          </div>
+          <a href="/eventos/<%= evento._id %>" class="botao botao--secundario botao--bloco">Ver detalhes</a>
+        </div>
+      <% }); %>
+    </div>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

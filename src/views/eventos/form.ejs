@@ -1,0 +1,50 @@
+<%- include('../partials/header', { titulo: modo === 'editar' ? 'Editar evento' : 'Novo evento' }) %>
+
+<main class="container container--estreito">
+  <div class="form-card">
+    <h1><%= modo === 'editar' ? 'Editar evento' : 'Novo evento' %></h1>
+    <p class="campo-ajuda">
+      <% if (modo === 'editar') { %>
+        Atualize as informações do seu evento.
+      <% } else { %>
+        Preencha os dados abaixo para publicar um novo evento.
+      <% } %>
+    </p>
+
+    <%- include('../partials/mensagens') %>
+
+    <form action="<%= modo === 'editar' ? '/eventos/' + evento._id + '/editar' : '/eventos' %>" method="POST" novalidate>
+      <div class="campo">
+        <label for="titulo">Título</label>
+        <input type="text" id="titulo" name="titulo" value="<%= dados.titulo || '' %>" required autofocus>
+      </div>
+
+      <div class="campo">
+        <label for="descricao">Descrição</label>
+        <textarea id="descricao" name="descricao" required><%= dados.descricao || '' %></textarea>
+      </div>
+
+      <div class="campo">
+        <label for="data_evento">Data e hora</label>
+        <input type="datetime-local" id="data_evento" name="data_evento" value="<%= dados.data_evento || '' %>" required>
+      </div>
+
+      <div class="campo">
+        <label for="local">Local</label>
+        <input type="text" id="local" name="local" value="<%= dados.local || '' %>" required>
+      </div>
+
+      <div class="campo">
+        <label for="capacidade_maxima">Capacidade máxima</label>
+        <input type="number" id="capacidade_maxima" name="capacidade_maxima" min="1" step="1" value="<%= dados.capacidade_maxima || '' %>" required>
+      </div>
+
+      <div class="form-rodape">
+        <a href="<%= modo === 'editar' ? '/eventos/' + evento._id : '/eventos' %>" class="botao botao--secundario">Cancelar</a>
+        <button type="submit" class="botao botao--primario"><%= modo === 'editar' ? 'Salvar alterações' : 'Criar evento' %></button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

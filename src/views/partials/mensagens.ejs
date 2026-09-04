@@ -1,0 +1,15 @@
+<% if (typeof flash !== 'undefined' && flash) { %>
+  <div class="alerta alerta--<%= flash.tipo === 'sucesso' ? 'sucesso' : 'erro' %>">
+    <%= flash.mensagem %>
+  </div>
+<% } %>
+
+<% if (typeof erros !== 'undefined' && erros && erros.length > 0) { %>
+  <div class="alerta alerta--erro">
+    <ul class="lista-erros">
+      <% erros.forEach(function(erro) { %>
+        <li><%= erro %></li>
+      <% }); %>
+    </ul>
+  </div>
+<% } %>

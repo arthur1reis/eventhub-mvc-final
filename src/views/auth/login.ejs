@@ -1,0 +1,30 @@
+<%- include('../partials/header', { titulo: 'Entrar' }) %>
+
+<main class="container container--estreito">
+  <div class="form-card">
+    <h1>Entrar</h1>
+    <p class="campo-ajuda">Acesse sua conta para ver e gerenciar eventos.</p>
+
+    <%- include('../partials/mensagens') %>
+
+    <form action="/auth/login" method="POST" novalidate>
+      <div class="campo">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="<%= typeof dados !== 'undefined' && dados.email ? dados.email : '' %>" required autofocus>
+      </div>
+
+      <div class="campo">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" required>
+      </div>
+
+      <button type="submit" class="botao botao--primario botao--bloco">Entrar</button>
+    </form>
+
+    <div class="form-rodape">
+      <p>Ainda não tem conta? <a href="/registro">Criar conta</a></p>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

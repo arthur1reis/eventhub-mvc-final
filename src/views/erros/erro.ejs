@@ -1,0 +1,12 @@
+<%- include('../partials/header', { titulo: titulo || 'Erro' }) %>
+
+<main class="container container--estreito">
+  <div class="pagina-erro">
+    <p class="pagina-erro__codigo"><%= codigo %></p>
+    <h1><%= titulo || 'Ocorreu um erro' %></h1>
+    <p><%= mensagem %></p>
+    <a class="botao botao--primario" href="/eventos">Voltar para eventos</a>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

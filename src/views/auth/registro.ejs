@@ -1,0 +1,45 @@
+<%- include('../partials/header', { titulo: 'Criar conta' }) %>
+
+<main class="container container--estreito">
+  <div class="form-card">
+    <h1>Criar conta</h1>
+    <p class="campo-ajuda">Cadastre-se como organizador para criar eventos, ou como participante para se inscrever neles.</p>
+
+    <%- include('../partials/mensagens') %>
+
+    <form action="/auth/registro" method="POST" novalidate>
+      <div class="campo">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" name="nome" value="<%= typeof dados !== 'undefined' && dados.nome ? dados.nome : '' %>" required autofocus>
+      </div>
+
+      <div class="campo">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="<%= typeof dados !== 'undefined' && dados.email ? dados.email : '' %>" required>
+      </div>
+
+      <div class="campo">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" minlength="6" required>
+        <p class="campo-ajuda">Mínimo de 6 caracteres.</p>
+      </div>
+
+      <div class="campo">
+        <label for="tipo">Tipo de conta</label>
+        <select id="tipo" name="tipo" required>
+          <option value="" disabled <%= (typeof dados === 'undefined' || !dados.tipo) ? 'selected' : '' %>>Selecione...</option>
+          <option value="participante" <%= typeof dados !== 'undefined' && dados.tipo === 'participante' ? 'selected' : '' %>>Participante</option>
+          <option value="organizador" <%= typeof dados !== 'undefined' && dados.tipo === 'organizador' ? 'selected' : '' %>>Organizador</option>
+        </select>
+      </div>
+
+      <button type="submit" class="botao botao--primario botao--bloco">Criar conta</button>
+    </form>
+
+    <div class="form-rodape">
+      <p>Já tem conta? <a href="/login">Entrar</a></p>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

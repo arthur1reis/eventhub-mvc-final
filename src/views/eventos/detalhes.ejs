@@ -1,0 +1,63 @@
+<%- include('../partials/header', { titulo: evento.titulo }) %>
+
+<main class="container container--estreito">
+  <%- include('../partials/mensagens') %>
+
+  <div class="painel">
+    <div class="page-header">
+      <div>
+        <h1><%= evento.titulo %></h1>
+        <p>Organizado por <%= evento.organizador_id && evento.organizador_id.nome ? evento.organizador_id.nome : 'Organizador' %></p>
+      </div>
+      <% if (vagasRestantes <= 0) { %>
+        <span class="selo selo--lotado">Lotado</span>
+      <% } else { %>
+        <span class="selo selo--vagas"><%= vagasRestantes %> vaga(s) restante(s)</span>
+      <% } %>
+    </div>
+
+    <p><%= evento.descricao %></p>
+
+    <div class="detalhes-evento__meta">
+      <div>
+        <span class="rotulo">Data</span>
+        <span class="valor"><%= new Date(evento.data_evento).toLocaleString('pt-BR', { dateStyle: 'long', timeStyle: 'short' }) %></span>
+      </div>
+      <div>
+        <span class="rotulo">Local</span>
+        <span class="valor"><%= evento.local %></span>
+      </div>
+      <div>
+        <span class="rotulo">Capacidade</span>
+        <span class="valor"><%= evento.capacidade_maxima %> pessoa(s)</span>
+      </div>
+    </div>
+
+    <div class="acoes">
+      <a href="/eventos" class="botao botao--secundario">← Voltar</a>
+
+      <% if (usuarioLogado.tipo === 'organizador' && souOrganizadorDono) { %>
+        <a href="/eventos/<%= evento._id %>/editar" class="botao botao--primario">Editar</a>
+        <form class="form-acao-linha" action="/eventos/<%= evento._id %>/excluir" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este evento? Esta ação não pode ser desfeita.');">
+          <button type="submit" class="botao botao--perigo">Excluir</button>
+        </form>
+      <% } %>
+
+      <% if (usuarioLogado.tipo === 'participante') { %>
+        <% if (inscricaoConfirmada) { %>
+          <form class="form-acao-linha" action="/inscricoes/<%= inscricaoId %>/cancelar" method="POST">
+            <button type="submit" class="botao botao--perigo">Cancelar inscrição</button>
+          </form>
+        <% } else if (vagasRestantes > 0) { %>
+          <form class="form-acao-linha" action="/eventos/<%= evento._id %>/inscrever" method="POST">
+            <button type="submit" class="botao botao--primario">Inscrever-se</button>
+          </form>
+        <% } else { %>
+          <button type="button" class="botao botao--secundario" disabled>Evento lotado</button>
+        <% } %>
+      <% } %>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
