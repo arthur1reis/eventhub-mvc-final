@@ -17,6 +17,8 @@ const { flashMiddleware } = require('./utils/flash');
 function createApp() {
   const app = express();
 
+  app.set('trust proxy', 1);
+
   // ---- Views (EJS) ----
   app.set('view engine', 'ejs');
   app.set('views', path.join(__dirname, 'views'));
